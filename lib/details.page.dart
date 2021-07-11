@@ -12,6 +12,13 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    print('at details initState');
+  }// initState
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,6 +84,7 @@ class _DetailsPageState extends State<DetailsPage> {
             children: [
 
               Container(
+                padding: EdgeInsets.all(12),
                 height: MediaQuery.of(context).size.height*.3,
                 width: double.infinity,
                 decoration: BoxDecoration(
