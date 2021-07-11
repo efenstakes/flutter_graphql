@@ -1,8 +1,5 @@
 
 
-
-import 'package:graphql_flutter/graphql_flutter.dart';
-
 String Get_Characters = """
     query {
       characters {
@@ -18,6 +15,25 @@ String Get_Characters = """
           }
           image
         }
+      }
+    }
+""";
+  
+
+
+String Get_Character = """
+    query Get_Character (\$id: ID!) {
+      character(id: \$id) {
+        id 
+        name
+        status
+        species
+        type
+        gender
+        origin {
+          name
+        }
+        image
       }
     }
 """;
