@@ -1,6 +1,9 @@
 // import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttr_graphql/details.page.dart';
+import 'package:fluttr_graphql/queries.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() async {
@@ -40,30 +43,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String query = """
-            query {
-            characters(page:10) {
-              results {
-                name
-                species
-                gender
-                image
-                type
-              }
-            }
-          }
-        """;
-        
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Rick & Morty'),
+        title: Text(
+          'Rick & Morty',
+          style: GoogleFonts.indieFlower(),
+        ),
         centerTitle: true,
         elevation: 0,
       ),
       body: Query(
-        options: QueryOptions(document: gql(query)),
+        options: QueryOptions(document: gql(Get_Characters)),
         builder: (QueryResult result, { VoidCallback? refetch, FetchMore? fetchMore }) {
           if (result.data == null) {
             return Center(
@@ -75,11 +68,14 @@ class _MyHomePageState extends State<MyHomePage> {
               child: CircularProgressIndicator(),
             );
           }
+          print(result.data?['characters']['results'][0]['gender']);
           return ListView.builder(
             itemBuilder: (context, index) {
+              // print(result.data?['characters']['results'][index]['id']);
+
               return ListTile(
                 contentPadding: EdgeInsets.all(5),
-                onTap: ()=> _func(),
+                onTap: ()=> _goToCharacterDetails(result.data?['characters']['results'][index]['id']),
                 title: Text(
                   result.data?['characters']['results'][index]['name'],
                 ),
@@ -97,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }// build
+
 
 
 
@@ -145,4 +142,12 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }// _func
+
+  
+
+  void _goToCharacterDetails(String? id) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (ctx)=> DetailsPage(id: id))
+    );
+  }// _goToCharacterDetails
 }
